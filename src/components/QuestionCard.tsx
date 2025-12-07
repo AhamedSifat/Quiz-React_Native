@@ -1,14 +1,29 @@
 import { View, Text, StyleSheet } from 'react-native';
 import AnswerOption from './AnswerOption';
-const QuestionCard = () => {
+import { useState } from 'react';
+
+export type QuestionCardProps = {
+  question: {
+    title: string;
+    options: string[];
+    correctAnswer: string;
+  };
+};
+const QuestionCard = ({ question }: QuestionCardProps) => {
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+
   return (
     <View style={styles.questionCard}>
-      <Text style={styles.question}>What is React Native?</Text>
+      <Text style={styles.question}>{question.title}</Text>
       <View style={{ gap: 5 }}>
-        <AnswerOption />
-        <AnswerOption />
-        <AnswerOption />
-        <AnswerOption />
+        {question.options.map((option) => (
+          <AnswerOption
+            key={option}
+            option={option}
+            isSelected={selectedOption === option}
+            onPress={() => setSelectedOption(option)}
+          />
+        ))}
       </View>
     </View>
   );
