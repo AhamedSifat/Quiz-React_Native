@@ -3,6 +3,7 @@ import QuestionCard from '../components/QuestionCard';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import questions from '../questions';
+import Card from '../components/Card';
 
 const question = questions[0];
 
@@ -15,10 +16,14 @@ const QuizScreen = () => {
             <Text style={styles.title}>Question 1/5</Text>
           </View>
 
-          <View>
-            <QuestionCard question={question} />
-            <Text style={styles.time}>20 sec</Text>
-          </View>
+          {question ? (
+            <View>
+              <QuestionCard question={question} />
+              <Text style={styles.time}>20 sec</Text>
+            </View>
+          ) : (
+            <Card title='No question available' />
+          )}
 
           <Pressable
             onPress={() => console.warn('pressed')}
