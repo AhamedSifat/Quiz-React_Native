@@ -4,6 +4,7 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import questions from '../questions';
 import Card from '../components/Card';
+import CustomButton from '../components/CustomButton';
 
 const question = questions[0];
 
@@ -25,18 +26,13 @@ const QuizScreen = () => {
             <Card title='No question available' />
           )}
 
-          <Pressable
-            onPress={() => console.warn('pressed')}
-            style={styles.button}
-          >
-            <Text style={styles.buttonText}>Next</Text>
-            <FontAwesome6
-              name='arrow-right'
-              size={24}
-              color='white'
-              style={styles.buttonIcon}
-            />
-          </Pressable>
+          <CustomButton
+            onPress={() => console.warn('Next Pressed')}
+            title='Next'
+            rightIcon={
+              <FontAwesome6 name='arrow-right' size={24} color='white' />
+            }
+          />
         </View>
       </SafeAreaView>
     </SafeAreaProvider>
@@ -66,23 +62,5 @@ const styles = StyleSheet.create({
     color: '#005055',
     marginTop: 15,
     fontWeight: 'bold',
-  },
-  button: {
-    backgroundColor: '#005055',
-    padding: 20,
-    borderRadius: 100,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  buttonText: {
-    color: '#FFFFFF',
-    textAlign: 'center',
-    fontWeight: '600',
-    fontSize: 16,
-    letterSpacing: 1.5,
-  },
-  buttonIcon: {
-    position: 'absolute',
-    right: 20,
   },
 });
