@@ -1,28 +1,28 @@
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import QuestionCard from '../components/QuestionCard';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import questions from '../questions';
 import Card from '../components/Card';
 import CustomButton from '../components/CustomButton';
-import { useState } from 'react';
+import { useQuiz } from '../providers/QuizProvider';
 
 const QuizScreen = () => {
-  const [questionIndex, setQuestionIndex] = useState(0);
-  const question = questions[questionIndex];
-
-  const onNextPress = () => {
-    if (questionIndex < questions.length - 1) {
-      setQuestionIndex((prevIndex) => prevIndex + 1);
-    }
-  };
+  const { question, questionIndex, onNextPress, score, totalQuestions } =
+    useQuiz();
 
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.page}>
         <View style={styles.container}>
           <View>
-            <Text style={styles.title}>Question 1/5</Text>
+            {question ? (
+              <Text style={styles.title}>
+                Question {questionIndex + 1}/{totalQuestions}
+              </Text>
+            ) : (
+              <Text style={styles.title}>Quiz Finished</Text>
+            )}
           </View>
 
           {question ? (
@@ -31,12 +31,16 @@ const QuizScreen = () => {
               <Text style={styles.time}>20 sec</Text>
             </View>
           ) : (
-            <Card title='No question available' />
+            <Card title='Well done!'>
+              <Text>
+                correct answers: {score}/{totalQuestions}
+              </Text>
+            </Card>
           )}
 
           <CustomButton
             onPress={onNextPress}
-            title='Next'
+            title={question ? 'Next' : 'Restart'}
             rightIcon={
               <FontAwesome6 name='arrow-right' size={24} color='white' />
             }
