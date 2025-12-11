@@ -21,16 +21,16 @@ const QuizScreen = () => {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setTime((prevTime) => {
-        if (prevTime === 1) {
-          onNextPress();
-          return 20;
-        }
-        return prevTime - 1;
-      });
+      setTime((prevTime) => prevTime - 1);
     }, 1000);
 
     return () => clearInterval(timer);
+  }, [question]);
+
+  useEffect(() => {
+    if (time <= 0) {
+      onNextPress();
+    }
   }, [time]);
 
   return (
