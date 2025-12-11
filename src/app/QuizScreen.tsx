@@ -1,15 +1,37 @@
 import { View, Text, StyleSheet } from 'react-native';
+import { useState, useEffect, use } from 'react';
 import QuestionCard from '../components/QuestionCard';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
-import questions from '../questions';
 import Card from '../components/Card';
 import CustomButton from '../components/CustomButton';
 import { useQuiz } from '../providers/QuizProvider';
 
 const QuizScreen = () => {
-  const { question, questionIndex, onNextPress, score, totalQuestions } =
-    useQuiz();
+  const {
+    question,
+    questionIndex,
+    onNextPress,
+    score,
+    totalQuestions,
+    bestScore,
+  } = useQuiz();
+
+  const [time, setTime] = useState(20);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTime((prevTime) => {
+        if (prevTime === 1) {
+          onNextPress();
+          return 20;
+        }
+        return prevTime - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [time]);
 
   return (
     <SafeAreaProvider>
@@ -28,13 +50,14 @@ const QuizScreen = () => {
           {question ? (
             <View>
               <QuestionCard question={question} />
-              <Text style={styles.time}>20 sec</Text>
+              <Text style={styles.time}>{time} sec</Text>
             </View>
           ) : (
             <Card title='Well done!'>
               <Text>
                 correct answers: {score}/{totalQuestions}
               </Text>
+              <Text>Your best score: {bestScore}</Text>
             </Card>
           )}
 
