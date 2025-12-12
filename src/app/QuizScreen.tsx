@@ -1,12 +1,13 @@
 import { View, Text, StyleSheet } from 'react-native';
-import { useState, useEffect, use } from 'react';
+import {useEffect } from 'react';
 import QuestionCard from '../components/QuestionCard';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import Card from '../components/Card';
 import CustomButton from '../components/CustomButton';
 import { useQuiz } from '../providers/QuizProvider';
-
+import {useTimer} from '../hooks/useTimer';
+ 
 const QuizScreen = () => {
   const {
     question,
@@ -17,15 +18,14 @@ const QuizScreen = () => {
     bestScore,
   } = useQuiz();
 
-  const [time, setTime] = useState(20);
+
+  const {time, startTimer, clearTimer} = useTimer(20);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setTime((prevTime) => prevTime - 1);
-    }, 1000);
-
-    return () => clearInterval(timer);
+  startTimer();
+    return () => clearTimer();
   }, [question]);
+
 
   useEffect(() => {
     if (time <= 0) {
